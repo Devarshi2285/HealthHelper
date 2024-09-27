@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         employeePhoneEdt = findViewById(R.id.idEdtEmployeePhoneNumber);
         employeeAddressEdt = findViewById(R.id.idEdtEmployeeAddress);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Employees");
 
         sendDatabtn = findViewById(R.id.idBtnSendData);
 
@@ -47,7 +45,13 @@ public class MainActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(address)) {
                     Toast.makeText(MainActivity.this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
                 } else {
-                    addDatatoFirebase(name, phone, address);
+                    RegisterUserTask registerTask = new RegisterUserTask();
+
+                    registerTask.execute(name, phone, address);
+
+                    Intent intent=new Intent(MainActivity.this,Login.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
