@@ -1,6 +1,7 @@
 package com.example.healthhelper;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -56,8 +57,27 @@ public class VerifyOtp extends AppCompatActivity implements SendOtp.SendOtpCallb
     }
 
     private void navigateToHome() {
-        Intent intent = new Intent(VerifyOtp.this, HomeActivity.class);
+        Intent intent = new Intent(VerifyOtp.this, DoctorActivity.class);
         startActivity(intent);
         finish();
     }
+
+    private void checkUserDetails() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserDetails", MODE_PRIVATE);
+        String designation = sharedPreferences.getString("designation", null);
+
+        if (designation != null) {
+            Intent intent;
+            if (designation.equals("Doctor")) {
+                intent = new Intent(VerifyOtp.this, DoctorActivity.class);
+            } else if (designation.equals("Patient")) {
+                intent = new Intent(VerifyOtp.this, PatientActivity.class);
+            } else {
+                return; // Handle unexpected designation
+            }
+            startActivity(intent);
+            finish();
+        }
+    }
+
 }
